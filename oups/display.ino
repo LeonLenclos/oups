@@ -37,6 +37,12 @@ void dispCharAt(char c, int i){
       delayMicroseconds(DELAY_DISPLAY);
 }
 
+void dispTime(int t){
+  // Also display a point at D3
+  dispInt(t/10);
+  dispCharAt('.', 2);
+}
+
 void dispInt(int n){
   char timer[4];
   sprintf(timer, "%04d", n);
@@ -45,11 +51,40 @@ void dispInt(int n){
   }
 }
 
+
 void dispOups(){
      dispCharAt('0', 0);
      dispCharAt('U', 1);
      dispCharAt('P', 2);
      dispCharAt('S', 3);
+}
+
+
+void dispRank(int t){
+    char rank = ' ';
+    if(t<5000){ // 5 sec
+      rank = 'S';
+    }
+    else if(t<10000){ // 10 sec
+       rank = 'L';
+    }
+    else if(t<15000){ // 15 sec
+       rank = 'E';
+    }
+    else if(t<25000){ // 25 sec
+       rank = 'C';
+    }
+    else if(t<50000){ // 50 sec
+       rank = 'P';
+    }
+    else if(t<100000){ // 100 sec
+       rank = 'A';
+    }
+  
+     dispCharAt(' ', 0);
+     dispCharAt(' ', 1);
+     dispCharAt(' ', 2);
+     dispCharAt(rank, 3);
 }
 
 void dispWaiting(){
@@ -102,10 +137,40 @@ void dispChar(char c){
     digitalWrite(DISPLAY_G, LOW);
     digitalWrite(DISPLAY_P, LOW);
     break;
-    case 'U':
-    digitalWrite(DISPLAY_A, LOW);
+    case 'A':
+    digitalWrite(DISPLAY_A, HIGH);
     digitalWrite(DISPLAY_B, HIGH);
     digitalWrite(DISPLAY_C, HIGH);
+    digitalWrite(DISPLAY_D, LOW);
+    digitalWrite(DISPLAY_E, HIGH);
+    digitalWrite(DISPLAY_F, HIGH);
+    digitalWrite(DISPLAY_G, HIGH);
+    digitalWrite(DISPLAY_P, LOW);
+    break;
+    case 'C':
+    digitalWrite(DISPLAY_A, HIGH);
+    digitalWrite(DISPLAY_B, LOW);
+    digitalWrite(DISPLAY_C, LOW);
+    digitalWrite(DISPLAY_D, HIGH);
+    digitalWrite(DISPLAY_E, HIGH);
+    digitalWrite(DISPLAY_F, HIGH);
+    digitalWrite(DISPLAY_G, LOW);
+    digitalWrite(DISPLAY_P, LOW);
+    break;
+    case 'E':
+    digitalWrite(DISPLAY_A, HIGH);
+    digitalWrite(DISPLAY_B, LOW);
+    digitalWrite(DISPLAY_C, LOW);
+    digitalWrite(DISPLAY_D, HIGH);
+    digitalWrite(DISPLAY_E, HIGH);
+    digitalWrite(DISPLAY_F, HIGH);
+    digitalWrite(DISPLAY_G, HIGH);
+    digitalWrite(DISPLAY_P, LOW);
+    break;
+    case 'L':
+    digitalWrite(DISPLAY_A, LOW);
+    digitalWrite(DISPLAY_B, LOW);
+    digitalWrite(DISPLAY_C, LOW);
     digitalWrite(DISPLAY_D, HIGH);
     digitalWrite(DISPLAY_E, HIGH);
     digitalWrite(DISPLAY_F, HIGH);
@@ -130,6 +195,16 @@ void dispChar(char c){
     digitalWrite(DISPLAY_E, LOW);
     digitalWrite(DISPLAY_F, HIGH);
     digitalWrite(DISPLAY_G, HIGH);
+    digitalWrite(DISPLAY_P, LOW);
+    break;
+    case 'U':
+    digitalWrite(DISPLAY_A, LOW);
+    digitalWrite(DISPLAY_B, HIGH);
+    digitalWrite(DISPLAY_C, HIGH);
+    digitalWrite(DISPLAY_D, HIGH);
+    digitalWrite(DISPLAY_E, HIGH);
+    digitalWrite(DISPLAY_F, HIGH);
+    digitalWrite(DISPLAY_G, LOW);
     digitalWrite(DISPLAY_P, LOW);
     break;
     case '1':

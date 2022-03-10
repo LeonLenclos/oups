@@ -34,7 +34,6 @@ int ANALOG_INPUT_THRESHOLD = 20;
 
 // TIME
 const int DELAY_DISPLAY = 55; //ms
-const int DELAY_DEATH_SIGNAL = 1000; //ms
 
 // STATES
 const int IDLE=0;
@@ -116,13 +115,14 @@ void stateMachine(){
       if(wired(START)){
         setState(PLAYING);
       }
-      else if(wired(WIRE)){
+      else if(wired(WIRE) || stateTimer >= 100000){ //100 sec
         setState(LOOSE);
       }
       else if(wired(END)){
         setState(WIN);
       }
       else {
+        silence();
         dispInt(stateTimer/1000);
       }
     break;
@@ -132,7 +132,20 @@ void stateMachine(){
         setState(PLAYING);
       }
       else {
-        dispInt(lastTimer/1000);
+        bool meloPlaying = playMeloHappy();
+        if(meloPlaying){
+          dispTime(lastTimer);
+        }
+        else{
+          if(stateTimer%1000>300){
+            if(stateTimer%2000>1000){
+              dispTime(lastTimer);
+            }
+            else{
+              dispRank(lastTimer);
+            }
+          }
+        }
       }
     break;
 
@@ -140,12 +153,13 @@ void stateMachine(){
       if(wired(START)){
         setState(PLAYING);
       }
-      else if(stateTimer > DELAY_DEATH_SIGNAL){
-        setState(IDLE);
-      }
       else {
-        playMeloSad();
-        dispOups();
+        if(playMeloSad()){
+          dispOups();
+        }
+        else{
+          setState(IDLE);
+        }
       }
     break;
   }
